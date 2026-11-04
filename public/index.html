@@ -19,14 +19,14 @@
 <label for="date">View date <input id="date" type="date" min="2026-11-04" max="2027-04-03"></label>
 </div>
 <div id="dashboard-view" class="tracker-view">
-<section class="hero"><div class="section-head"><div><p class="eyebrow" id="journey-day">Five-month journey</p><h1>Daily progress</h1></div></div>
+<section class="hero"><div class="section-head"><div><p class="eyebrow" id="journey-day">Five-month journey</p><h1>Make today<br>feel good.</h1></div></div>
 <p class="encouragement" id="encouragement"></p>
-<div class="metrics">
+<a class="primary-action" href="#meals-view">Find something good to cook</a><div class="metrics">
 <div class="metric"><span>Latest weight</span><strong id="weight-value"></strong><small id="weight-detail"></small></div>
 <div class="metric"><span>Activity</span><strong id="activity-value"></strong><small>For the selected day</small></div>
 <div class="metric"><span>Meals logged</span><strong id="meals-value"></strong><small>For the selected day</small></div>
 </div></section>
-<section class="panel"><p class="eyebrow">Energy</p><h2>Daily calories</h2>
+<section id="featured-meal" class="featured-meal"></section><section class="panel energy-panel"><p class="eyebrow">Energy</p><h2>Daily calories</h2>
 <div class="energy-grid">
 <div class="metric"><span>Planned menu</span><strong id="planned-kcal"></strong><small id="planned-detail"></small></div>
 <div class="metric"><span>Logged intake</span><strong id="logged-kcal"></strong><small id="logged-detail"></small></div>
@@ -44,7 +44,7 @@
 <section class="panel"><p class="eyebrow">Food log</p><h2>What you ate</h2><p class="muted">Tell me what you ate and how much in your tracker chat. Your entries appear here after the Sheet is updated.</p><ul id="food-log" class="food-log"></ul></section>
 <section class="panel"><p class="eyebrow">Training</p><h2>Society gym</h2><p class="muted">Your training plan will go here after you share the equipment video.</p></section>
 </div><div id="meals-view" class="tracker-view" hidden>
-<section class="panel"><div class="section-head"><div><p class="eyebrow">Egg-free vegetarian</p><h2>On the menu</h2></div><span id="menu-total" class="badge">Daily meal plan</span></div><div id="meals" class="meal-grid"></div></section>
+<section class="panel"><div class="section-head"><div><p class="eyebrow">Egg-free vegetarian</p><h1>Your kitchen,<br>your kind of healthy.</h1></div><span id="menu-total" class="badge">Daily meal plan</span></div><p class="meal-intro">Simple ingredients. A little prep. Something to look forward to.</p><div id="meals" class="meal-grid"></div></section>
 </div>
 <footer><button id="refresh" type="button">Refresh from Sheets</button><button id="lock" type="button">Lock dashboard</button></footer>
-</div></main></body></html>
+</div><dialog id="cook-dialog"><div class="cook-top"><span>Let’s make it</span><button id="close-cook" type="button" aria-label="Close recipe">Close ×</button></div><div id="cook-content"></div></dialog></main></body></html>

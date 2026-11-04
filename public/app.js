@@ -179,13 +179,15 @@ function render() {
     if (!meal) continue;
     const [,kind,dish,ingredients,prep,nutrients,image,kcal] = meal;
     const card = add(meals,'article','','meal');
+    const illustration = add(card,'img',''); illustration.src = '/meal-' + slots.indexOf(slot) + '.svg'; illustration.alt = 'Food illustration';
+    const caption = add(card,'small','Illustration','illustration-label');
     if (image && /^https:\/\//i.test(image)) {
       const photo = document.createElement('img');
       photo.alt = dish;
       photo.loading = 'lazy';
       photo.addEventListener('error', () => photo.remove(), {once:true});
       photo.src = image;
-      card.append(photo);
+      illustration.remove(); caption.remove(); card.prepend(photo);
     }
     add(card,'p',kind,'eyebrow');
     add(card,'h3',dish);
@@ -195,7 +197,7 @@ function render() {
     const list = add(details,'ul','');
     for (const item of (ingredients ?? '').split(';').map(x=>x.trim()).filter(Boolean)) add(list,'li',item);
     const recipe = add(card,'details','');
-    recipe.open = true;
+    recipe.open = false;
     add(recipe,'summary','Step-by-step prep');
     const steps = add(recipe,'ol','');
     const instructions = (prep ?? '').split(/\n+|\.(?=\s+[A-Z])/).map(x=>x.trim()).filter(Boolean);
@@ -203,7 +205,40 @@ function render() {
       if (/^\d+\s*(?:min|hour)/i.test(instruction)) add(recipe,'p',instruction,'muted');
       else add(steps,'li',instruction.replace(/^\d+[.)]\s+/, ''));
     }
-    if (nutrients) add(card,'p',nutrients,'muted');
+    if (nutrients) add(card,'p',nutrients,'muted nutrient-note');
+    const cook = add(card,'button','Start cooking','cook-button');
+    cook.type = 'button';
+    cook.addEventListener('click', () => {
+      const content = el('cook-content');
+      content.replaceChildren();
+      add(content,'h2',dish);
+      add(content,'p',metricNumber(kcal) !== null ? '~' + kcal + ' kcal per serving' : 'Calories pending','kcal-badge');
+      const ingredientsCopy = details.cloneNode(true);
+      const recipeCopy = recipe.cloneNode(true);
+      ingredientsCopy.open = true; recipeCopy.open = true;
+      content.append(ingredientsCopy,recipeCopy);
+      for (const step of recipeCopy.querySelectorAll('li')) {
+        const text = step.textContent;
+        step.replaceChildren();
+        const label = add(step,'label','');
+        const checkbox = document.createElement('input'); checkbox.type = 'checkbox';
+        label.append(checkbox); add(label,'span',text);
+      }
+      el('cook-dialog').showModal();
+    });
+  }
+  const featured = el('featured-meal');
+  featured.replaceChildren();
+  const featuredRow = plan.find(row => !food.some(log => log[1] === row[1])) ?? plan[0];
+  if (featuredRow) {
+    const img = add(featured,'img','');
+    img.src = '/meal-' + Math.max(0,slots.indexOf(featuredRow[1])) + '.svg';
+    img.alt = 'Food illustration';
+    const info = add(featured,'div','');
+    add(info,'p','From your menu','eyebrow');
+    add(info,'h2',featuredRow[2]);
+    add(info,'p','Open the recipe, gather your ingredients, and take it one step at a time.','muted');
+    const link = add(info,'a','See today’s recipes','primary-action'); link.href = '#meals-view';
   }
   if (!plan.length) add(meals,'p','The Sheet has no menu for this date yet.','muted');
 }
@@ -259,3 +294,5 @@ function selectView() {
 }
 window.addEventListener('hashchange', selectView);
 selectView();
+
+el('close-cook').onclick = () => el('cook-dialog').close();

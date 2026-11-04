@@ -29,3 +29,65 @@ button{cursor:pointer;color:var(--accent);font-weight:650}button:disabled{opacit
 .energy-grid strong{font-size:clamp(1rem,3vw,1.45rem)}.energy-note{margin:.8rem 0 0;font-size:.85rem}
 .kcal-badge{color:var(--mint);font-variant-numeric:tabular-nums;font-weight:700}
 @media(max-width:500px){.workspace-bar nav{width:100%}.workspace-bar a{padding:.6rem .25rem;font-size:.85rem}.workspace-bar label{display:flex;align-items:center;gap:.5rem}.energy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Editorial food and movement layout. */
+:root{--bg:#121a24;--surface:#1b2634;--ink:#f4f6f9;--muted:#bdc7d4;--accent:#b9a1f6;--border:#354354;--hero:#29304c;--mint:#9cd9bd;--plot:#b9a1f6}
+:root[data-theme=light]{--bg:#f0f3f7;--surface:#fff;--ink:#223449;--muted:#52657a;--accent:#6545a5;--border:#dce3eb;--hero:#e7e2f4;--mint:#257452;--plot:#7652b8}
+[hidden]{display:none!important}
+main{max-width:1180px;margin:1.4rem auto 6rem}
+header{padding:.5rem 0 1.2rem}
+.brand{font-size:1.25rem;letter-spacing:-.04em}
+.workspace-bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:.7rem 0;border-bottom:1px solid var(--border);margin-bottom:1.5rem}
+.workspace-bar nav{border:0;background:transparent;gap:1rem;padding:0}
+.workspace-bar a{padding:.7rem .2rem;border-radius:0;border-bottom:3px solid transparent;font-weight:650}
+.workspace-bar a[aria-current]{background:transparent;border-color:var(--accent)}
+.eyebrow{text-transform:none;letter-spacing:0;font-size:.85rem;font-weight:600;color:var(--muted)}
+.hero,.panel{box-shadow:none;border:0;border-radius:24px}
+.hero{background:var(--hero);padding:2.3rem;position:relative}
+h1{font-family:Georgia,'Times New Roman',serif;font-weight:400;font-size:clamp(2.4rem,5vw,4rem);line-height:1.07;letter-spacing:-.045em}
+h2{font-size:1.35rem;letter-spacing:-.035em}
+.encouragement{font-size:.95rem;max-width:42ch;margin:1rem 0}
+.primary-action{display:inline-flex;align-items:center;justify-content:center;background:var(--ink);color:var(--bg);padding:.8rem 1.05rem;text-decoration:none;border-radius:12px;font-size:.88rem;font-weight:700;min-height:44px}
+.metrics{margin-top:1.7rem;padding-top:1.2rem;border-top:1px solid var(--border);gap:1.5rem}
+.metrics .metric{border:0;background:transparent;padding:0}
+.metric strong{font-size:2rem;letter-spacing:-.04em}
+#dashboard-view{display:grid;grid-template-columns:1.05fr 1fr;gap:1.2rem}
+#dashboard-view>.hero{grid-column:1}
+.featured-meal{overflow:hidden;background:var(--surface);border-radius:24px;display:grid;grid-template-rows:205px 1fr}
+.featured-meal>img{width:100%;height:205px;object-fit:cover}
+.featured-meal>div{padding:1.4rem}
+.featured-meal h2{font-size:1.55rem}
+.featured-meal .primary-action{margin-top:.6rem}
+.energy-panel{grid-column:1/-1}
+#dashboard-view>.panel,#dashboard-view .insights .panel{margin:0}
+.insights{grid-column:1/-1;gap:1.2rem}
+.energy-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:0}
+.energy-grid .metric{border:0;border-right:1px solid var(--border);background:transparent;border-radius:0;padding:.5rem 1rem}
+.energy-grid .metric:first-child{padding-left:0}.energy-grid .metric:last-child{border:0}
+.energy-grid .metric strong{font-size:1.3rem}
+#meals-view>.panel{background:transparent;padding:0}
+.meal-intro{color:var(--muted);margin:1rem 0 1.8rem}
+.meal-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:1.5rem}
+.meal{position:relative;background:var(--surface);border:0;border-radius:22px;padding:0 1.4rem 1.4rem;overflow:hidden}
+.meal>img{width:calc(100% + 2.8rem);max-width:none;margin:0 -1.4rem 1rem;height:225px;object-fit:cover;border-radius:0}
+.illustration-label{position:absolute;top:195px;right:14px;color:#263442;background:#fffD;padding:1px 7px;border-radius:4px;font-size:.65rem}
+.meal .eyebrow{margin:.2rem 0;color:var(--muted)}
+.meal h3{font-size:1.5rem;letter-spacing:-.035em}
+.meal>details,.meal>.nutrient-note{display:none}
+.meal .kcal-badge{font-size:.85rem;margin:.2rem 0 1rem}
+.cook-button{margin-top:auto;min-height:46px;border:0;background:var(--hero);color:var(--ink)}
+#daily-view .panel{max-width:850px;margin:0 auto 1rem}
+.food-log li{padding:1rem 0}
+dialog{width:min(620px,calc(100% - 1.5rem));max-height:88dvh;border:1px solid var(--border);border-radius:24px;background:var(--surface);color:var(--ink);padding:1.5rem}
+dialog::backdrop{background:#090f1dbb;backdrop-filter:blur(5px)}
+.cook-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);margin-bottom:1.2rem}
+#cook-content h2{font:2rem/1.15 Georgia,serif;margin-bottom:1rem}
+#cook-content details{padding:1rem 0;border-top:1px solid var(--border)}
+#cook-content summary{font-weight:700;cursor:pointer}
+#cook-content li{padding:.5rem 0}
+#cook-content label{display:flex;align-items:flex-start;gap:.7rem;color:var(--ink);font-size:1rem}
+#cook-content input{accent-color:#9470d8;width:20px;height:20px;flex-shrink:0}
+#cook-content label:has(input:checked) span{text-decoration:line-through;color:var(--muted)}
+@media(max-width:800px){#dashboard-view{grid-template-columns:1fr}.hero{padding:1.5rem}.featured-meal{grid-template-columns:40% 1fr;grid-template-rows:auto}.featured-meal>img{height:100%;min-height:230px}.energy-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.9rem}.energy-grid .metric{border:0;padding:0}.energy-grid .metric:first-child{padding:0}.metrics{gap:.5rem}.metric strong{font-size:1.6rem}}
+@media(max-width:540px){main{width:calc(100% - 1.5rem);margin-top:.7rem}.workspace-bar{position:static}.workspace-bar nav{position:fixed;bottom:0;left:0;right:0;z-index:20;background:var(--surface);border-top:1px solid var(--border);padding:.5rem .8rem max(.6rem,env(safe-area-inset-bottom));gap:.6rem}.workspace-bar a{border-bottom:0;border-radius:12px;font-size:.85rem;min-height:44px}.workspace-bar a[aria-current]{background:var(--hero)}.workspace-bar label{margin-left:auto}.meal-grid{grid-template-columns:1fr}.featured-meal{grid-template-columns:1fr;grid-template-rows:170px auto}.featured-meal>img{height:170px;min-height:0}.hero h1{font-size:3rem}.panel{padding:1.3rem}.meal>img{height:200px}.illustration-label{top:170px}.header-actions button{font-size:.8rem}.energy-note{font-size:.75rem}}
+@media(prefers-reduced-motion:no-preference){button,a{transition:background-color .15s ease}dialog[open]{animation:reveal .16s ease-out}@keyframes reveal{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}}

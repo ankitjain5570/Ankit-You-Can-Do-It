@@ -8,6 +8,7 @@ const assets = { '/': ['index.html', 'text/html'], '/app.js': ['app.js', 'text/j
   '/install.js': ['install.js', 'text/javascript'], '/sw.js': ['sw.js', 'text/javascript'],
   ...Object.fromEntries(['icon-192.png', 'icon-512.png', 'icon-maskable.png', 'apple-touch-icon.png']
     .map(file => ['/' + file, [file, 'image/png']])) };
+for (let i = 0; i < 4; i++) assets['/meal-' + i + '.svg'] = ['meal-' + i + '.svg', 'image/svg+xml'];
 const port = Number(process.env.PORT || 4173);
 createServer(async (req, res) => {
   const url = new URL(req.url, 'http://127.0.0.1:' + port);
