@@ -9,7 +9,7 @@ A private five-month dashboard with egg-free vegetarian meals and daily weight/a
 3. Run `npm start` on Node.js 24, visit http://127.0.0.1:4173 and enter the access key.
 4. Import the GitHub repo into a free Vercel project using the Other framework preset. Import the environment variables and deploy. Open the production URL on your phone and check that meals, food log and progress load.
 
-The expected tabs are `Daily Meals` (Date, Meal, Dish, Ingredients per serving, Prep, Nutrient notes, optional Image URL) and `Progress` (Date, Weight (kg), Activity (min), Notes, Saved at), plus the Food Log tab (Date, Meal, Food, Quantity, Notes, Logged at). Keep the column order. The Codex meal schedule is managed separately from hosting.
+The expected tabs are `Daily Meals` (Date, Meal, Dish, Ingredients per serving, Prep, Nutrient notes, optional Image URL, Estimated kcal per serving) and `Progress` (Date, Weight (kg), Activity (min), Notes, Saved at), plus the Food Log tab (Date, Meal, Food, Quantity, Notes, Logged at, Consumed weight in grams, Estimated kcal), and Energy (Date, Estimated maintenance kcal, Daily target kcal, Food log complete). Keep the column order. The Codex meal schedule is managed separately from hosting.
 
 Meal portions are starting suggestions. The menus follow general [NHS vegetarian nutrition guidance](https://www.nhs.uk/live-well/eat-well/how-to-eat-a-balanced-diet/the-vegetarian-diet/). The gym plan is pending the equipment video.
 
@@ -19,3 +19,5 @@ Run npm start and open http://127.0.0.1:4173/?preview=1 for illustrative data. T
 ## Install Ankit Fit on your phone
 
 Open the deployed HTTPS site. On Android Chrome, tap **Install app** or use the Chrome menu. On iPhone Safari, choose **Share → Add to Home Screen → Add**. The app opens in its own window from the Ankit Fit icon. A connection is needed for private dashboard data.
+
+Enter dated maintenance and target estimates in Energy after establishing a personal goal. Mark Food log complete as YES only after confirming that all food and drinks for that date have been logged. Planned and logged calories are separate, and the dashboard only estimates the daily deficit once the complete log has calories for every item.

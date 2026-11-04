@@ -7,17 +7,18 @@ let key = '', data;
 const preview = ['127.0.0.1', 'localhost'].includes(location.hostname) &&
   new URLSearchParams(location.search).get('preview') === '1';
 const sampleDate = date.value;
+const slotsForPreview = ['Breakfast','Lunch','Snack','Dinner'];
 const sampleMeals = [
   ['Breakfast', 'Curd, oat and guava bowl', '45 g rolled oats; 200 g plain curd; 1 small guava; 1 tbsp ground flaxseed; 60 ml water', 'Stir the oats, curd and water together. Add chopped guava and flaxseed. 5 min.', 'Curd provides protein and calcium. Flaxseed adds fibre and plant omega-3.'],
   ['Lunch', 'Lemon chana and brown rice', '150 g cooked chickpeas; 120 g cooked brown rice; 100 g cucumber; 100 g tomato; ½ lemon; 1 tsp oil; ¼ tsp cumin; pinch of iodised salt', 'Warm the chickpeas with oil and cumin. Serve with rice and the chopped salad dressed with lemon and salt. 12 min with cooked staples.', 'Chickpeas supply fibre and iron. Lemon and tomato add vitamin C.'],
   ['Snack', 'Apple and roasted chana', '1 apple; 30 g roasted chana', 'Slice the apple and serve with roasted chana. 3 min.', 'Fruit and chickpeas add fibre.'],
   ['Dinner', 'Tofu and capsicum wraps', '180 g firm tofu; 2 small whole-wheat rotis; 100 g capsicum; 75 g spinach; 1 tsp oil; 1 garlic clove; pinch of iodised salt', 'Sauté garlic and capsicum in oil. Add crumbled tofu, spinach and salt. Cook until hot and fold into warmed rotis. 15 min.', 'Tofu provides protein and spinach adds folate.']
-].map(meal => [sampleDate, ...meal]);
+].map(meal => [sampleDate, ...meal, '', [430,475,190,530][slotsForPreview.indexOf(meal[0])]]);
 const sampleProgress = [0,1,3,4,6].map((day,i) => [
   new Date(Date.parse(sampleDate) - (6-day)*86400000).toISOString().slice(0,10),
   [89,88.7,88.9,88.3,88.1][i], [20,0,35,22,40][i]
 ]);
-const sampleFood = [[sampleDate,'Breakfast','Curd and oats','1 bowl'],[sampleDate,'Lunch','Chana and brown rice','1 plate']];
+const sampleFood = [[sampleDate,'Breakfast','Curd and oats','1 bowl','','',320,350],[sampleDate,'Lunch','Chana and brown rice','1 plate','','',410,475]];
 
 function theme(value) {
   document.documentElement.dataset.theme = value;
@@ -31,7 +32,7 @@ el('theme').onclick = () => {
 };
 
 async function api(options = {}) {
-  if (preview) return { meals: sampleMeals, progress: sampleProgress, foodLog: sampleFood };
+  if (preview) return { meals: sampleMeals, progress: sampleProgress, foodLog: sampleFood, energy: [[sampleDate, 2400, 2050, false]] };
   const response = await fetch('/api/tracker', { ...options, headers: {
     Authorization: 'Bearer ' + key, 'Content-Type': 'application/json'
   }, signal: AbortSignal.timeout(30000) });
@@ -106,6 +107,7 @@ function renderProgress(food) {
   const count = new Set(food.map(row => row[1])).size;
   const day = Math.round((Date.parse(date.value) - Date.parse(date.min)) / dayMs) + 1;
   const length = Math.round((Date.parse(date.max) - Date.parse(date.min)) / dayMs) + 1;
+  el('daily-checkin').textContent = entry ? [entry[1] && entry[1] + ' kg', activity === null ? '' : activity + ' min activity', entry[3]].filter(Boolean).join(' · ') : 'No progress check-in for this date yet.';
   el('journey-day').textContent = 'Five-month journey · Day ' + day + ' of ' + length;
   el('weight-value').textContent = latest ? latest.value + ' kg' : '—';
   el('weight-detail').textContent = weights.length > 1
@@ -127,25 +129,55 @@ function renderProgress(food) {
   })), true);
 }
 
+function renderEnergy(plan, food) {
+  const rows = (data.energy ?? []).filter(row => row[0] <= date.value).sort((a,b) => a[0].localeCompare(b[0]));
+  const positive = value => metricNumber(value) > 0 ? Number(value) : null;
+  const maintenance = rows.map(row => positive(row[1])).filter(value => value !== null).at(-1);
+  const target = rows.map(row => positive(row[2])).filter(value => value !== null).at(-1);
+  const complete = rows.some(row => row[0] === date.value && /^(yes|true)$/i.test(String(row[3])));
+  const kcal = value => { const n = metricNumber(value); return n !== null && n >= 0 ? n : null; };
+  const logged = food.map(row => kcal(row[7])).filter(value => value !== null);
+  const planned = slots.map(slot => kcal(plan.find(row => row[1] === slot)?.[7])).filter(value => value !== null);
+  const sum = values => values.reduce((total, value) => total + value, 0);
+  const format = value => Math.round(value).toLocaleString('en-IN') + ' kcal';
+  const intake = sum(logged);
+  const full = complete && logged.length > 0 && logged.length === food.length;
+  el('planned-kcal').textContent = planned.length ? '~' + format(sum(planned)) : '—';
+  el('menu-total').textContent = planned.length ? '~' + format(sum(planned)) + (planned.length === slots.length ? ' planned' : ' estimated so far') : 'Calories pending';
+  el('planned-detail').textContent = planned.length === slots.length ? 'All four planned meals' : planned.length + ' of 4 meals estimated';
+  el('logged-kcal').textContent = logged.length ? '~' + format(intake) : '—';
+  el('logged-detail').textContent = full ? 'Complete day · estimated' : 'Partial log · ' + logged.length + '/' + food.length + ' items estimated';
+  el('target-kcal').textContent = target ? format(target) : '—';
+  el('target-detail').textContent = target && maintenance
+    ? format(Math.abs(maintenance - target)) + (maintenance >= target ? ' below maintenance' : ' above maintenance')
+    : target ? 'Maintenance estimate pending' : 'Personal target pending';
+  el('maintenance-kcal').textContent = maintenance ? '~' + format(maintenance) : '—';
+  el('balance-kcal').textContent = full && maintenance
+    ? '~' + format(Math.abs(maintenance - intake)) + (maintenance >= intake ? ' deficit' : ' surplus')
+    : '—';
+  el('balance-detail').textContent = !maintenance ? 'Needs a maintenance estimate' : !full ? 'Needs a complete food log with calories' : 'Maintenance minus estimated intake';
+}
+
 function render() {
   const food = (data.foodLog ?? []).filter(row => row[0] === date.value);
   renderProgress(food);
   const log = el('food-log');
   log.replaceChildren();
   if (!food.length) add(log,'li','No meals logged for this date yet.','muted');
-  for (const [,slot,dish,quantity,notes] of food) {
+  for (const [,slot,dish,quantity,notes,,grams,kcal] of food) {
     const item = add(log,'li','');
     add(item,'strong',dish);
-    add(item,'span',[slot,quantity,notes].filter(Boolean).join(' · '),'muted');
+    add(item,'span',[slot,quantity,grams && grams + ' g',metricNumber(kcal) !== null ? '~' + kcal + ' kcal' : 'Calories pending',notes].filter(Boolean).join(' · '),'muted');
   }
 
   const meals = el('meals');
   meals.replaceChildren();
   const plan = data.meals.filter(row => row[0] === date.value);
+  renderEnergy(plan, food);
   for (const slot of slots) {
     const meal = plan.find(row => row[1] === slot);
     if (!meal) continue;
-    const [,kind,dish,ingredients,prep,nutrients,image] = meal;
+    const [,kind,dish,ingredients,prep,nutrients,image,kcal] = meal;
     const card = add(meals,'article','','meal');
     if (image && /^https:\/\//i.test(image)) {
       const photo = document.createElement('img');
@@ -157,6 +189,7 @@ function render() {
     }
     add(card,'p',kind,'eyebrow');
     add(card,'h3',dish);
+    add(card,'p',metricNumber(kcal) !== null ? '~' + kcal + ' kcal per serving' : 'Calories pending','kcal-badge');
     const details = add(card,'details','');
     add(details,'summary','Ingredients per serving');
     const list = add(details,'ul','');
@@ -215,3 +248,14 @@ if (preview) {
   status.textContent = 'Local preview · Illustrative meals, weigh-ins and activity.';
   render();
 }
+const navigation = [...document.querySelectorAll('.workspace-bar nav a')];
+function selectView() {
+  const current = navigation.find(link => link.hash === location.hash) ?? navigation[0];
+  for (const link of navigation) {
+    el(link.hash.slice(1)).hidden = link !== current;
+    if (link === current) link.setAttribute('aria-current','page');
+    else link.removeAttribute('aria-current');
+  }
+}
+window.addEventListener('hashchange', selectView);
+selectView();

@@ -20,3 +20,12 @@ button{cursor:pointer;color:var(--accent);font-weight:650}button:disabled{opacit
 @media(max-width:680px){.insights,.meal-grid{grid-template-columns:1fr}.metrics{gap:.45rem}.metric small{line-height:1.25}.hero .section-head{align-items:flex-start}}
 
 .header-actions{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}.brand .mark{object-fit:cover;border-radius:.7rem}
+
+.workspace-bar{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:.8rem;margin-bottom:1rem}
+.workspace-bar nav{display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem;background:var(--surface);border:1px solid var(--border);border-radius:.85rem;padding:.3rem}
+.workspace-bar a{color:var(--muted);text-align:center;text-decoration:none;font-weight:700;border-radius:.6rem;padding:.6rem .8rem;white-space:nowrap}
+.workspace-bar a[aria-current]{background:var(--hero);color:var(--accent)}
+.energy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:.7rem;margin-top:.9rem}
+.energy-grid strong{font-size:clamp(1rem,3vw,1.45rem)}.energy-note{margin:.8rem 0 0;font-size:.85rem}
+.kcal-badge{color:var(--mint);font-variant-numeric:tabular-nums;font-weight:700}
+@media(max-width:500px){.workspace-bar nav{width:100%}.workspace-bar a{padding:.6rem .25rem;font-size:.85rem}.workspace-bar label{display:flex;align-items:center;gap:.5rem}.energy-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}

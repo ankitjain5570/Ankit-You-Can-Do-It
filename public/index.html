@@ -14,20 +14,37 @@
 <button>Unlock</button></form></section>
 <p id="status" role="status"></p>
 <div id="dashboard" hidden>
-<section class="hero"><div class="section-head"><div><p class="eyebrow" id="journey-day">Five-month journey</p><h1>Daily progress</h1></div>
-<label>View date <input id="date" type="date" min="2026-11-04" max="2027-04-03"></label></div>
+<div class="workspace-bar">
+<nav aria-label="Tracker sections"><a href="#dashboard-view" aria-current="page">Dashboard</a><a href="#daily-view">Daily Input</a><a href="#meals-view">Meals</a></nav>
+<label for="date">View date <input id="date" type="date" min="2026-11-04" max="2027-04-03"></label>
+</div>
+<div id="dashboard-view" class="tracker-view">
+<section class="hero"><div class="section-head"><div><p class="eyebrow" id="journey-day">Five-month journey</p><h1>Daily progress</h1></div></div>
 <p class="encouragement" id="encouragement"></p>
 <div class="metrics">
 <div class="metric"><span>Latest weight</span><strong id="weight-value"></strong><small id="weight-detail"></small></div>
 <div class="metric"><span>Activity</span><strong id="activity-value"></strong><small>For the selected day</small></div>
 <div class="metric"><span>Meals logged</span><strong id="meals-value"></strong><small>For the selected day</small></div>
 </div></section>
+<section class="panel"><p class="eyebrow">Energy</p><h2>Daily calories</h2>
+<div class="energy-grid">
+<div class="metric"><span>Planned menu</span><strong id="planned-kcal"></strong><small id="planned-detail"></small></div>
+<div class="metric"><span>Logged intake</span><strong id="logged-kcal"></strong><small id="logged-detail"></small></div>
+<div class="metric"><span>Daily target</span><strong id="target-kcal"></strong><small id="target-detail"></small></div>
+<div class="metric"><span>Estimated maintenance</span><strong id="maintenance-kcal"></strong><small>Energy to maintain weight</small></div>
+<div class="metric"><span>Estimated daily balance</span><strong id="balance-kcal"></strong><small id="balance-detail"></small></div>
+</div><p class="muted energy-note">A calorie deficit is estimated maintenance minus actual intake. Meal calories vary with portions, ingredients and cooking oil.</p></section>
 <div class="insights">
 <section class="panel"><p class="eyebrow">Weigh-ins</p><h2>Weight trend</h2><div id="weight-chart"></div></section>
 <section class="panel"><p class="eyebrow">Last seven days</p><h2>Activity minutes</h2><div id="activity-chart"></div></section>
 </div>
+</div>
+<div id="daily-view" class="tracker-view" hidden>
+<section class="panel"><p class="eyebrow">Daily Input</p><h1>Your check-in</h1><p class="muted" id="daily-checkin"></p></section>
 <section class="panel"><p class="eyebrow">Food log</p><h2>What you ate</h2><p class="muted">Tell me what you ate and how much in your tracker chat. Your entries appear here after the Sheet is updated.</p><ul id="food-log" class="food-log"></ul></section>
-<section class="panel"><div class="section-head"><div><p class="eyebrow">Egg-free vegetarian</p><h2>On the menu</h2></div><span class="badge">Daily meal plan</span></div><div id="meals" class="meal-grid"></div></section>
 <section class="panel"><p class="eyebrow">Training</p><h2>Society gym</h2><p class="muted">Your training plan will go here after you share the equipment video.</p></section>
+</div><div id="meals-view" class="tracker-view" hidden>
+<section class="panel"><div class="section-head"><div><p class="eyebrow">Egg-free vegetarian</p><h2>On the menu</h2></div><span id="menu-total" class="badge">Daily meal plan</span></div><div id="meals" class="meal-grid"></div></section>
+</div>
 <footer><button id="refresh" type="button">Refresh from Sheets</button><button id="lock" type="button">Lock dashboard</button></footer>
 </div></main></body></html>
