@@ -1,21 +1,29 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex"><title>Ankit Health Tracker</title><link rel="stylesheet" href="/style.css">
+<meta name="robots" content="noindex"><meta name="referrer" content="no-referrer">
+<title>Ankit Health Tracker</title><link rel="stylesheet" href="/style.css">
 <script src="/app.js" type="module"></script></head>
 <body><main>
-<header><div><p class="eyebrow">Five-month journey</p><h1>Ankit Health Tracker</h1></div><button id="theme" type="button">Light mode</button></header>
-<section id="locked" class="panel"><h2>Open your dashboard</h2><form id="unlock">
+<header><div class="brand"><span class="mark" aria-hidden="true">↗</span><span>Ankit <strong>Health Tracker</strong></span></div><button id="theme" type="button">Light mode</button></header>
+<section id="locked" class="panel"><p class="eyebrow">Private dashboard</p><h1>Your five-month journey</h1><form id="unlock">
 <label>Access key <input name="key" type="password" autocomplete="current-password" required></label>
 <button>Unlock</button></form></section>
 <p id="status" role="status"></p>
 <div id="dashboard" hidden>
-<section class="panel"><div class="section-head"><div><p class="eyebrow">Egg-free vegetarian</p><h2>Daily meals</h2></div>
-<label>Plan date <input id="date" type="date" min="2026-11-04" max="2027-04-03"></label></div><div id="meals"></div></section>
-<section class="panel"><p class="eyebrow">Daily check-in</p><h2>Your progress</h2>
-<form id="checkin"><div class="fields"><label>Weight (kg) <input name="weight" type="number" min="0.1" max="500" step="0.1" inputmode="decimal"></label>
-<label>Activity (minutes) <input name="activity" type="number" min="0" max="1440"></label></div>
-<label>Notes <textarea name="notes" maxlength="400" rows="2"></textarea></label>
-<button>Save check-in</button></form><p id="trend"></p><ul id="history"></ul></section>
-<section class="panel"><p class="eyebrow">Training</p><h2>Society gym</h2><p>Training plan pending the gym equipment video.</p></section>
-<button id="lock" type="button">Lock dashboard</button>
+<section class="hero"><div class="section-head"><div><p class="eyebrow" id="journey-day">Five-month journey</p><h1>Daily progress</h1></div>
+<label>View date <input id="date" type="date" min="2026-11-04" max="2027-04-03"></label></div>
+<p class="encouragement" id="encouragement"></p>
+<div class="metrics">
+<div class="metric"><span>Latest weight</span><strong id="weight-value"></strong><small id="weight-detail"></small></div>
+<div class="metric"><span>Activity</span><strong id="activity-value"></strong><small>For the selected day</small></div>
+<div class="metric"><span>Meals logged</span><strong id="meals-value"></strong><small>For the selected day</small></div>
+</div></section>
+<div class="insights">
+<section class="panel"><p class="eyebrow">Weigh-ins</p><h2>Weight trend</h2><div id="weight-chart"></div></section>
+<section class="panel"><p class="eyebrow">Last seven days</p><h2>Activity minutes</h2><div id="activity-chart"></div></section>
+</div>
+<section class="panel"><p class="eyebrow">Food log</p><h2>What you ate</h2><p class="muted">Tell me what you ate and how much in your tracker chat. Your entries appear here after the Sheet is updated.</p><ul id="food-log" class="food-log"></ul></section>
+<section class="panel"><div class="section-head"><div><p class="eyebrow">Egg-free vegetarian</p><h2>On the menu</h2></div><span class="badge">Daily meal plan</span></div><div id="meals" class="meal-grid"></div></section>
+<section class="panel"><p class="eyebrow">Training</p><h2>Society gym</h2><p class="muted">Your training plan will go here after you share the equipment video.</p></section>
+<footer><button id="refresh" type="button">Refresh from Sheets</button><button id="lock" type="button">Lock dashboard</button></footer>
 </div></main></body></html>

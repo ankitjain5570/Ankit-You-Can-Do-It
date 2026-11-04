@@ -59,9 +59,9 @@ export async function handle(request) {
 
   try {
     if (request.method === 'GET') {
-      const [meals, entries] = await Promise.all([sheet("'Daily Meals'!A2:F"), sheet("Progress!A2:E")]);
+      const [meals, entries, foodLog] = await Promise.all([sheet("'Daily Meals'!A2:G"), sheet("Progress!A2:E"), sheet("'Food Log'!A2:E")]);
       const byDate = new Map(entries.filter(([date]) => datePattern.test(date)).map(row => [row[0], row]));
-      return json({ meals, progress: [...byDate.values()].sort((a,b) => a[0].localeCompare(b[0])) });
+      return json({ meals, foodLog, progress: [...byDate.values()].sort((a,b) => a[0].localeCompare(b[0])) });
     }
     if (request.method !== 'POST') return json({ error: 'Method not supported.' }, 405);
     let entry;
