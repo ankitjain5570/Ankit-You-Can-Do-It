@@ -1,0 +1,9 @@
+{
+  "name": "ankit-health-tracker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env.local preview.mjs",
+    "check": "node --check api/tracker.js && node --check public/app.js && node --check preview.mjs"
+  }
+}
