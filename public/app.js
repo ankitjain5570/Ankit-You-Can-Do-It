@@ -1,3 +1,4 @@
+const mealPhotos = [["https://1.bp.blogspot.com/-cc4OzKgfJ04/VchZ0__oQMI/AAAAAAAAAgo/JSWzyJ2EiAw/s1600/20150810_095217.png","https://brekkieisserved.blogspot.com/2015/08/57-platki-owsiane-z-jogurtem.html","Fruit, oats and yogurt"],["https://jehancancook.com/wp-content/uploads/2019/05/Airfryer-Chicken-1-7-1440x1184.jpg","https://jehancancook.com/2019/05/chickpea-rice-easy-meal/","Chickpea rice"],["https://images.unsplash.com/photo-1642339800118-eb551cfa1434?auto=format&fit=crop&w=1000&q=85","https://unsplash.com/photos/F-ReDCrjQbo","Apple snack"],["https://images.squarespace-cdn.com/content/v1/5fe306e77f0afc2852ba2cd0/1627820547736-BN3NOJ6SU0MXMLW3LW0P/Chunky%2BTofu%2BWraps.png","https://www.proformanceuk.com/burgers-and-wraps/chunky-tofu-wraps","Tofu vegetable wraps"]];
 const el = id => document.getElementById(id);
 const date = el('date'), status = el('status');
 const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata',
@@ -179,16 +180,17 @@ function render() {
     if (!meal) continue;
     const [,kind,dish,ingredients,prep,nutrients,image,kcal] = meal;
     const card = add(meals,'article','','meal');
-    const illustration = add(card,'img',''); illustration.src = '/meal-' + slots.indexOf(slot) + '.svg'; illustration.alt = 'Food illustration';
-    const caption = add(card,'small','Illustration','illustration-label');
-    if (image && /^https:\/\//i.test(image)) {
-      const photo = document.createElement('img');
-      photo.alt = dish;
-      photo.loading = 'lazy';
-      photo.addEventListener('error', () => photo.remove(), {once:true});
-      photo.src = image;
-      illustration.remove(); caption.remove(); card.prepend(photo);
-    }
+    const photoInfo = mealPhotos[slots.indexOf(slot)];
+    const photo = add(card,'img','');
+    photo.alt = photoInfo[2] + ' serving inspiration';
+    photo.loading = 'lazy';
+    photo.decoding = 'async';
+    photo.referrerPolicy = 'no-referrer';
+    photo.src = image && /^https:\/\//i.test(image) ? image : photoInfo[0];
+    photo.addEventListener('error', () => { photo.remove(); }, {once:true});
+    const credit = add(card,'a','Serving inspiration · Photo source','photo-credit');
+    credit.href = image && /^https:\/\//i.test(image) ? image : photoInfo[1];
+    credit.target = '_blank'; credit.rel = 'noopener noreferrer';
     add(card,'p',kind,'eyebrow');
     add(card,'h3',dish);
     add(card,'p',metricNumber(kcal) !== null ? '~' + kcal + ' kcal per serving' : 'Calories pending','kcal-badge');
@@ -232,10 +234,11 @@ function render() {
   const featuredRow = plan.find(row => !food.some(log => log[1] === row[1])) ?? plan[0];
   if (featuredRow) {
     const img = add(featured,'img','');
-    img.src = '/meal-' + Math.max(0,slots.indexOf(featuredRow[1])) + '.svg';
-    img.alt = 'Food illustration';
+    img.src = featuredRow[6] && /^https:\/\//i.test(featuredRow[6]) ? featuredRow[6] : mealPhotos[Math.max(0,slots.indexOf(featuredRow[1]))][0];
+    img.referrerPolicy = 'no-referrer'; img.addEventListener('error', () => img.remove(), {once:true});
+    img.alt = 'Serving inspiration for ' + featuredRow[2];
     const info = add(featured,'div','');
-    add(info,'p','From your menu','eyebrow');
+    add(info,'p','From your menu · Serving inspiration','eyebrow');
     add(info,'h2',featuredRow[2]);
     add(info,'p','Open the recipe, gather your ingredients, and take it one step at a time.','muted');
     const link = add(info,'a','See today’s recipes','primary-action'); link.href = '#meals-view';
@@ -285,6 +288,7 @@ if (preview) {
 }
 const navigation = [...document.querySelectorAll('.workspace-bar nav a')];
 function selectView() {
+  window.scrollTo({top:0,behavior:'instant'});
   const current = navigation.find(link => link.hash === location.hash) ?? navigation[0];
   for (const link of navigation) {
     el(link.hash.slice(1)).hidden = link !== current;
