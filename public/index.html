@@ -1,10 +1,14 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex"><meta name="referrer" content="no-referrer">
-<title>Ankit Health Tracker</title><link rel="stylesheet" href="/style.css">
-<script src="/app.js" type="module"></script></head>
+<meta name="theme-color" content="#0e1117"><meta name="apple-mobile-web-app-title" content="Ankit Fit">
+<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="/icon-192.png" type="image/png">
+<title>Ankit Fit</title><link rel="stylesheet" href="/style.css">
+<script src="/app.js" type="module"></script><script src="/install.js" type="module"></script></head>
 <body><main>
-<header><div class="brand"><span class="mark" aria-hidden="true">↗</span><span>Ankit <strong>Health Tracker</strong></span></div><button id="theme" type="button">Light mode</button></header>
+<header><div class="brand"><img class="mark" src="/icon-192.png" width="38" height="38" alt=""><strong>Ankit Fit</strong></div><div class="header-actions"><button id="install" type="button" hidden>Install app</button><button id="theme" type="button">Light mode</button></div></header>
+<section id="install-instructions" class="panel" hidden><p class="eyebrow">Home screen</p><h2>Install Ankit Fit</h2><p id="install-help" role="status"></p><button id="dismiss-install" type="button">Got it</button></section>
 <section id="locked" class="panel"><p class="eyebrow">Private dashboard</p><h1>Your five-month journey</h1><form id="unlock">
 <label>Access key <input name="key" type="password" autocomplete="current-password" required></label>
 <button>Unlock</button></form></section>

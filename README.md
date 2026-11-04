@@ -16,3 +16,6 @@ Meal portions are starting suggestions. The menus follow general [NHS vegetarian
 ## Local preview
 
 Run npm start and open http://127.0.0.1:4173/?preview=1 for illustrative data. The preview uses no Google credentials. For a meal photo, put a browser-accessible HTTPS image URL in the last Daily Meals column. Leave the cell blank when a photo is unavailable.
+## Install Ankit Fit on your phone
+
+Open the deployed HTTPS site. On Android Chrome, tap **Install app** or use the Chrome menu. On iPhone Safari, choose **Share → Add to Home Screen → Add**. The app opens in its own window from the Ankit Fit icon. A connection is needed for private dashboard data.

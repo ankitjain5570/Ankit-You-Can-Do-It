@@ -3,7 +3,11 @@ import { readFile } from 'node:fs/promises';
 import { handle } from './api/tracker.js';
 
 const assets = { '/': ['index.html', 'text/html'], '/app.js': ['app.js', 'text/javascript'],
-  '/style.css': ['style.css', 'text/css'] };
+  '/style.css': ['style.css', 'text/css'],
+  '/manifest.webmanifest': ['manifest.webmanifest', 'application/manifest+json'],
+  '/install.js': ['install.js', 'text/javascript'], '/sw.js': ['sw.js', 'text/javascript'],
+  ...Object.fromEntries(['icon-192.png', 'icon-512.png', 'icon-maskable.png', 'apple-touch-icon.png']
+    .map(file => ['/' + file, [file, 'image/png']])) };
 const port = Number(process.env.PORT || 4173);
 createServer(async (req, res) => {
   const url = new URL(req.url, 'http://127.0.0.1:' + port);
@@ -27,6 +31,6 @@ createServer(async (req, res) => {
     const asset = assets[url.pathname];
     if (!asset) { res.writeHead(404).end(); return; }
     const [file, mime] = asset;
-    res.writeHead(200, { 'Content-Type': mime + '; charset=utf-8' }).end(await readFile(new URL('./public/' + file, import.meta.url)));
+    res.writeHead(200, { 'Content-Type': mime.startsWith('image/') ? mime : mime + '; charset=utf-8' }).end(await readFile(new URL('./public/' + file, import.meta.url)));
   } catch { res.writeHead(500).end(); }
 }).listen(port, '127.0.0.1', () => console.log('Preview at http://127.0.0.1:' + port));

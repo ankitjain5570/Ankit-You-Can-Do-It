@@ -4,6 +4,6 @@
   "type": "module",
   "scripts": {
     "start": "node --env-file-if-exists=.env.local preview.mjs",
-    "check": "node --check api/tracker.js && node --check public/app.js && node --check preview.mjs"
+    "check": "node --check api/tracker.js && node --check public/app.js && node --check preview.mjs && node --check public/install.js && node --check public/sw.js"
   }
 }

@@ -18,3 +18,5 @@ form,label{display:grid;gap:.35rem}form{justify-items:start;gap:.85rem}label{col
 button{cursor:pointer;color:var(--accent);font-weight:650}button:disabled{opacity:.65;cursor:wait}:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 #status:empty{display:none}footer{margin-top:1rem;justify-content:flex-end}
 @media(max-width:680px){.insights,.meal-grid{grid-template-columns:1fr}.metrics{gap:.45rem}.metric small{line-height:1.25}.hero .section-head{align-items:flex-start}}
+
+.header-actions{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}.brand .mark{object-fit:cover;border-radius:.7rem}
